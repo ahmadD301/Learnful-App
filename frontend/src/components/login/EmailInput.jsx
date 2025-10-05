@@ -1,5 +1,3 @@
-import React from 'react'
-
 function EmailInput({ email, setEmail, isLoading }) {
 return (
     <div className="form-control w-full">

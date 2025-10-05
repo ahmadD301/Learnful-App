@@ -1,3 +1,4 @@
+
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
 
@@ -31,3 +32,5 @@ export function PasswordInput({ password, setPassword, isLoading }) {
     </div>
   )
 }
+
+export default PasswordInput

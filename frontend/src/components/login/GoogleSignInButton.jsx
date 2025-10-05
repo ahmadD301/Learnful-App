@@ -1,11 +1,8 @@
-// components/GoogleSignInButton.jsx
-"use client"
-
 export function GoogleSignInButton({ onClick, isLoading }) {
   return (
     <button
       type="button"
-      className="btn btn-outline w-full hover:btn-secondary gap-2"
+      className="btn btn-outline w-full hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all duration-200 gap-2"
       onClick={onClick}
       disabled={isLoading}
     >
