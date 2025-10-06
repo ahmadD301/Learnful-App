@@ -8,7 +8,8 @@ import { RememberMe } from '../components/login/RememberMe.jsx'
 import { Divider } from '../components/login/Divider.jsx'
 import { SubmitButton } from '../components/login/SubmitButton.jsx'
 import AuthLink from '../components/login/AuthLink.jsx'
-
+import WelcomeMsg from '../components/login/WelcomeMsg.jsx'
+import toast from 'react-hot-toast'
 function LoginForm() {
 
   const [email, setEmail] = useState("");
@@ -26,16 +27,40 @@ function LoginForm() {
     }
   }, []);
 
-  const handleSubmit = (e) => {
+    // 🧩 Mock login function (to be replaced with backend call later)
+  const mockLogin = async (email, password) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (email === "test@example.com" && password === "123456") {
+          resolve({ token: "mock-jwt-token", user: { name: "Test User" } });
+        } else {
+          reject("Invalid email or password");
+        }
+      }, 1000);
+    });
+  };
 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      setIsLoading(false);
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
   }
   const handleGoogleSignIn = () => { }
 
   return (
-
-
     <div className="flex items-center justify-center min-h-screen">
+
       <div className="card card-bordered max-w-md w-full shadow-md">
+
         <div className="card-body">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -62,8 +87,6 @@ function LoginForm() {
       </div>
 
     </div>
-
-
 
   )
 }

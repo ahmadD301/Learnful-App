@@ -1,19 +1,24 @@
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-import { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
-
-export function PasswordInput({ password, setPassword, isLoading }) {
-  const [showPassword, setShowPassword] = useState(false)
+export function PasswordInput({
+  password,
+  setPassword,
+  isLoading,
+  label = "Password",
+  placeholder = "Enter your password",
+}) {
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="form-control w-full">
       <label className="label">
-        <span className="label-text font-semibold">Password</span>
+        <span className="label-text font-semibold">{label}</span>
       </label>
       <div className="relative">
         <input
           type={showPassword ? "text" : "password"}
-          placeholder="••••••••"
+          placeholder={placeholder}
           className="input input-bordered w-full pr-10 focus:input-primary"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -30,7 +35,7 @@ export function PasswordInput({ password, setPassword, isLoading }) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default PasswordInput
+export default PasswordInput;

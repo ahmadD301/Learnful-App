@@ -12,6 +12,7 @@ import AuthLink from '../components/login/AuthLink.jsx'
 import NavigationButtons from '../components/signUp/NavigationButtons.jsx'
 import StepIndicator from '../components/signUp/StepIndicator.jsx'
 import toast from 'react-hot-toast'
+import { tr } from 'motion/react-client'
 function SignUp() {
 
   const [formData, setFormData] = useState({
@@ -30,10 +31,23 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("Submitted:", { ...formData, profileImage });
+      toast.success("Sign up successful!");
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred during sign up. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
-  // handle step navigation
+  // handle next step navigation
   const handleNext = () => {
     // Validate step 1 before proceeding
     if (currentStep === 1) {
@@ -87,6 +101,8 @@ function SignUp() {
       handleSubmit(e);
     }
   };
+
+  // Handle back navigation
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
@@ -119,6 +135,7 @@ function SignUp() {
     reader.readAsDataURL(file);
   }
 
+  // Remove selected image
   const removeImage = () => {
     setProfileImage(null);
     setImagePreview(null);
@@ -131,6 +148,16 @@ function SignUp() {
     setError("");
   }
 
+  // Handle Google Sign Up
+  const handleGoogleSignUp = async () => {
+    try {
+      setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      toast.success("Signed up with Google successfully!");
+    }catch (error) {
+      toast.error("Failed to sign up with Google"); 
+    }finally {setIsLoading(false);}
+  }
 
 
   return (
@@ -229,8 +256,8 @@ function SignUp() {
                 <>
                   <Divider />
                   <GoogleSignInButton
-                  // onClick={handleGoogleSignUp} 
-                  // isLoading={isLoading}
+                  onClick={handleGoogleSignUp} 
+                  isLoading={isLoading}
                   >
                     Sign up with Google
                   </GoogleSignInButton>

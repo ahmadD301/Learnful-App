@@ -11,8 +11,6 @@ function App() {
   return (
     <>
     <Routes>
-      <Route path="/" element={<NavigationButtons />} />
-      
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignUpForm />} />
     </Routes>
