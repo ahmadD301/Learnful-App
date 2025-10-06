@@ -1,5 +1,3 @@
-// components/ProfileImageUpload.jsx
-"use client"
 
 import { motion } from "framer-motion"
 
@@ -10,11 +8,17 @@ export function ProfileImageUpload({
   isLoading 
 }) {
   return (
-    <div className="space-y-2">
-      <label className="label">
-        <span className="label-text font-semibold">Profile Image (Optional)</span>
-      </label>
-      <div className="flex items-center gap-4">
+    <div className="space-y-4 text-center">      
+      <div className="flex flex-col items-center gap-4">
+        <input
+          type="file"
+          id="profileImage"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="hidden"
+          disabled={isLoading}
+        />
+        
         {imagePreview ? (
           <motion.div 
             initial={{ scale: 0.8, opacity: 0 }} 
@@ -24,12 +28,12 @@ export function ProfileImageUpload({
             <img
               src={imagePreview}
               alt="Profile preview"
-              className="w-24 h-24 rounded-full object-cover border-2 border-base-300"
+              className="w-32 h-32 rounded-full object-cover border-4 border-primary shadow-lg"
             />
             <button
               type="button"
               onClick={removeImage}
-              className="absolute -top-2 -right-2 bg-error text-error-content rounded-full p-1 hover:scale-110 transition-transform"
+              className="absolute -top-2 -right-2 bg-error text-error-content rounded-full p-1 hover:scale-110 transition-transform shadow-md"
               disabled={isLoading}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -38,30 +42,22 @@ export function ProfileImageUpload({
             </button>
           </motion.div>
         ) : (
-          <div className="w-24 h-24 rounded-full border-2 border-dashed border-base-300 flex items-center justify-center bg-base-200">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-base-content/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
-          </div>
-        )}
-        <div className="flex-1">
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-            disabled={isLoading}
-          />
-          <label
-            htmlFor="profileImage"
-            className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-base-300 bg-base-100 px-4 py-2 text-sm font-medium hover:bg-base-200 transition-colors"
+          <label 
+            htmlFor="profileImage" 
+            className="w-32 h-32 rounded-full border-4 border-dashed border-base-300 flex items-center justify-center bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
           >
-            {imagePreview ? "Change Image" : "Upload Image"}
+            <div className="flex flex-col items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-base-content/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span className="text-sm text-base-content/60 mt-2">Add Photo</span>
+            </div>
           </label>
-          <p className="text-xs text-base-content/60 mt-2">Max size: 5MB</p>
-        </div>
+        )}
+        
+        <p className="text-xs text-base-content/60">Max size: 5MB • Optional</p>
       </div>
     </div>
   )
 }
+export default ProfileImageUpload;
