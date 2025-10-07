@@ -7,7 +7,7 @@ export function StepIndicator({ currentStep, totalSteps }) {
             key={index}
             className={`step ${index < currentStep ? 'step-primary' : ''} ${index === currentStep - 1 ? 'step-primary' : ''}`}
           >
-            <span className="step-marker">{index + 1}</span>
+            {/* <span className="step-marker">{index + 1}</span> */}
           </div>
         ))}
       </div>
