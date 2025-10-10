@@ -7,6 +7,7 @@ import ManageCourses from "./components/Admin/ManageCourses";
 import ManageQuizzes from "./components/Admin/ManageQuizzes";
 import ManageUsers from "./components/Admin/ManageUsers";
 import Settings from "./components/Admin/Settings";
+import TeacherSignUp from "./pages/TeacherSignUp";
 function App() {
 
   return (
@@ -18,8 +19,10 @@ function App() {
       <Route path="/admin/quizzes" element={<ManageQuizzes />} />
       <Route path="/admin/Settings" element={<Settings />}/>
       
+
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignUpForm />} />
+      <Route path="/teacher/signup" element={<TeacherSignUp />} />
     </Routes>
     </>
   )
