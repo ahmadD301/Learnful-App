@@ -10,19 +10,21 @@ import toast from 'react-hot-toast'
 import Institution from '../components/signUp/Institution.jsx'
 import SpecializationSelect from "../components/signUp/SpecializationSelect.jsx"
 import AuthLink from '../components/login/AuthLink.jsx'
+import CertificationUpload from "../components/signUp/CertificationUpload"
+
 
 function TeacherSignUp() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    institution: "",
-    specialization: "",
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        institution: "",
+        specialization: "",
     })
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [certificationFile, setCertificationFile] = useState(null);
+    const [uploadingCert, setUploadingCert] = useState(false);
 
     const specializations = [
         "Software Engineering",
@@ -39,35 +41,53 @@ function TeacherSignUp() {
         "DevOps",
     ]
 
-const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
 
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      toast.error("Please fill in all fields");
-      setIsLoading(false);
-      return;
-    }
-    if(formData.password !== formData.confirmPassword){
-        toast.error("Passwords do not match.");
-        setIsLoading(false);
-        return
-    }
-    if(!formData.specialization){
-        toast.error("Please select a specialization");
-        setIsLoading(false);
-        return
-    }
-    toast.success("Form validated successfully! 🎉");
-    console.log("Form Data:", formData)
+        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+            toast.error("Please fill in all fields");
+            setIsLoading(false);
+            return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match.");
+            setIsLoading(false);
+            return
+        }
+        if (!formData.specialization) {
+            toast.error("Please select a specialization");
+            setIsLoading(false);
+            return
+        }
+        if (!certificationFile) {
+            toast.error("Please upload your teaching certification.")
+            setIsLoading(false)
+            return
+        }
 
-    // Reset loading (since we're not saving)
-    setIsLoading(false)
-  }
-  // Handle input changes for all form fields
-  const handleInputChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  }
+        toast.success("Form validated successfully! 🎉");
+        console.log("Form Data:", formData)
+
+        // Reset loading (since we're not saving)
+        setIsLoading(false)
+    }
+    // Handle input changes for all form fields
+    const handleInputChange = (field, value) => {
+        setFormData({ ...formData, [field]: value });
+    }
+    const handleFileUpload = (file, setFile, setUploading) => {
+        setUploading(true)
+        setTimeout(() => {
+            setFile(file) // just set the file for now, no real upload
+            setUploading(false)
+            toast.success("File uploaded successfully!")
+        }, 1000)
+    }
+    const handleRemoveFile = (setFile) => {
+        setFile(null);
+        toast("File removed");
+    }
     return (
         <div className="flex items-center justify-center min-h-screen ">
             <div className="card card-bordered max-w-2xl w-full shadow-md ">
@@ -93,34 +113,34 @@ const handleSubmit = (e) => {
                             {/* Name + Email */}
                             <div className='flex flex-col md:flex-row justify-center gap-6'>
                                 <NameInput
-                                  name={formData.name}
-                                  setName={(value) => handleInputChange('name', value)}
-                                  isLoading={isLoading}
+                                    name={formData.name}
+                                    setName={(value) => handleInputChange('name', value)}
+                                    isLoading={isLoading}
                                 />
                                 <EmailInput
-                                  email={formData.email}
-                                  setEmail={(value) => handleInputChange('email', value)}
-                                  isLoading={isLoading}
+                                    email={formData.email}
+                                    setEmail={(value) => handleInputChange('email', value)}
+                                    isLoading={isLoading}
                                 />
                             </div>
-                            
+
                             {/* Password + Confirm Password */}
                             <div className='flex flex-col md:flex-row justify-center gap-6'>
                                 <PasswordInput
-                                  password={formData.password}
-                                  setPassword={(value) => handleInputChange('password', value)}
-                                  isLoading={isLoading}
-                                  label="Password"
+                                    password={formData.password}
+                                    setPassword={(value) => handleInputChange('password', value)}
+                                    isLoading={isLoading}
+                                    label="Password"
                                 />
                                 <PasswordInput
-                                  password={formData.confirmPassword}
-                                  setPassword={(value) => handleInputChange('confirmPassword', value)}
-                                  isLoading={isLoading}
-                                  label="Confirm Password"
-                                  placeholder="Confirm your password"
+                                    password={formData.confirmPassword}
+                                    setPassword={(value) => handleInputChange('confirmPassword', value)}
+                                    isLoading={isLoading}
+                                    label="Confirm Password"
+                                    placeholder="Confirm your password"
                                 />
                             </div>
-                            
+
                             {/* Optional fields */}
                             <Institution formData={formData} setFormData={setFormData} />
 
@@ -129,7 +149,15 @@ const handleSubmit = (e) => {
                                 setFormData={setFormData}
                                 specializations={specializations}
                             />
-                            {/* Submit Button */}       
+                            <CertificationUpload
+                                file={certificationFile}
+                                setFile={setCertificationFile}
+                                uploading={uploadingCert}
+                                setUploading={setUploadingCert}
+                                handleFileUpload={handleFileUpload}
+                                handleRemoveFile={handleRemoveFile}
+                            />
+                            {/* Submit Button */}
                             <SubmitButton isLoading={isLoading} >Sign UP</SubmitButton>
                             <AuthLink
                                 question="Already have an account?"
