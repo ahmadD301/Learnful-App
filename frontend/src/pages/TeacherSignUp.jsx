@@ -12,18 +12,18 @@ import SpecializationSelect from "../components/signUp/SpecializationSelect.jsx"
 import AuthLink from '../components/login/AuthLink.jsx'
 
 function TeacherSignUp() {
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    institution: "",
+    specialization: "",
+    })
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [shake, setShake] = useState(false);
+
     const specializations = [
         "Software Engineering",
         "Data Structures",
@@ -38,12 +38,39 @@ function TeacherSignUp() {
         "Cloud Computing",
         "DevOps",
     ]
-    const handleSubmit = () => {
 
+const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+      toast.error("Please fill in all fields");
+      setIsLoading(false);
+      return;
     }
+    if(formData.password !== formData.confirmPassword){
+        toast.error("Passwords do not match.");
+        setIsLoading(false);
+        return
+    }
+    if(!formData.specialization){
+        toast.error("Please select a specialization");
+        setIsLoading(false);
+        return
+    }
+    toast.success("Form validated successfully! 🎉");
+    console.log("Form Data:", formData)
+
+    // Reset loading (since we're not saving)
+    setIsLoading(false)
+  }
+  // Handle input changes for all form fields
+  const handleInputChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  }
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="card card-bordered max-w-2xl w-full shadow-md">
+        <div className="flex items-center justify-center min-h-screen ">
+            <div className="card card-bordered max-w-2xl w-full shadow-md ">
                 <div className="card-body">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -63,35 +90,38 @@ function TeacherSignUp() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className='flex justify-center gap-6'>
+                            {/* Name + Email */}
+                            <div className='flex flex-col md:flex-row justify-center gap-6'>
                                 <NameInput
-                                //   name={formData.name}
-                                //   setName={(value) => handleInputChange('name', value)}
-                                //   isLoading={isLoading}
+                                  name={formData.name}
+                                  setName={(value) => handleInputChange('name', value)}
+                                  isLoading={isLoading}
                                 />
                                 <EmailInput
-                                //   email={formData.email}
-                                //   setEmail={(value) => handleInputChange('email', value)}
-                                //   isLoading={isLoading}
+                                  email={formData.email}
+                                  setEmail={(value) => handleInputChange('email', value)}
+                                  isLoading={isLoading}
                                 />
                             </div>
-                            <div className='flex justify-center gap-6'>
+                            
+                            {/* Password + Confirm Password */}
+                            <div className='flex flex-col md:flex-row justify-center gap-6'>
                                 <PasswordInput
-                                //   password={formData.password}
-                                //   setPassword={(value) => handleInputChange('password', value)}
-                                //   isLoading={isLoading}
-                                //   label="Password"
+                                  password={formData.password}
+                                  setPassword={(value) => handleInputChange('password', value)}
+                                  isLoading={isLoading}
+                                  label="Password"
                                 />
-
                                 <PasswordInput
-                                //   password={formData.confirmPassword}
-                                //   setPassword={(value) => handleInputChange('confirmPassword', value)}
-                                //   isLoading={isLoading}
-                                //   label="Confirm Password"
-                                //   placeholder="Confirm your password"
+                                  password={formData.confirmPassword}
+                                  setPassword={(value) => handleInputChange('confirmPassword', value)}
+                                  isLoading={isLoading}
+                                  label="Confirm Password"
+                                  placeholder="Confirm your password"
                                 />
                             </div>
-
+                            
+                            {/* Optional fields */}
                             <Institution formData={formData} setFormData={setFormData} />
 
                             <SpecializationSelect
@@ -99,8 +129,8 @@ function TeacherSignUp() {
                                 setFormData={setFormData}
                                 specializations={specializations}
                             />
-                            <SubmitButton isLoading={isLoading} >Sign in</SubmitButton>
-
+                            {/* Submit Button */}       
+                            <SubmitButton isLoading={isLoading} >Sign UP</SubmitButton>
                             <AuthLink
                                 question="Already have an account?"
                                 linkText="Login"
