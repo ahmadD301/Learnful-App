@@ -11,6 +11,7 @@ import TeacherSignUp from "./pages/TeacherSignUp";
 import HomePage from "./pages/HomePage";
 import TeacherCourseBuilder from "./pages/TeacherCourseBuilder";
 import StudentProfilePage from './pages/StudentProfilePage.jsx'
+import BrowseCoursesPage from './pages/BrowseCoursesPage.jsx'
 function App() {
 
   return (
@@ -24,11 +25,12 @@ function App() {
       <Route path="/admin/Settings" element={<Settings />}/>
       
       <Route path="/student" element={<StudentProfilePage />}/>
+      <Route path="/courses" element={<BrowseCoursesPage />} />
 
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/teacher/signup" element={<TeacherSignUp />} />
-
+      
   
       <Route path="/teacher/courseBuilder" element={<TeacherCourseBuilder />} />
     </Routes>
