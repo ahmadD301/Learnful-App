@@ -10,6 +10,7 @@ import Settings from "./components/Admin/Settings";
 import TeacherSignUp from "./pages/TeacherSignUp";
 import HomePage from "./pages/HomePage";
 import TeacherCourseBuilder from "./pages/TeacherCourseBuilder";
+import StudentProfilePage from './pages/StudentProfilePage.jsx'
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/admin/verification" element={<ManageVerification />} />
       <Route path="/admin/Settings" element={<Settings />}/>
       
+      <Route path="/student" element={<StudentProfilePage />}/>
 
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignUpForm />} />
