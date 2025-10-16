@@ -1,6 +1,6 @@
-import React from "react"
 
 export default function EnrolledCourses({ courses }) {
+  
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <h3 className="text-xl font-bold mb-6">Enrolled Courses</h3>

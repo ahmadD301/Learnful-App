@@ -1,26 +1,36 @@
-import React from "react"
+import ProfileImageUpload from '../../signUp/ProfileImageUpload.jsx'
 
 export default function EditProfileModal({ editForm, setEditForm, onCancel, onSave }) {
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Check file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size too large! Please select an image smaller than 5MB.")
+        return
+      }
+      
+      const reader = new FileReader()
+      reader.onload = (ev) => setEditForm({ ...editForm, avatar: ev.target.result })
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeImage = () => {
+    setEditForm({ ...editForm, avatar: "" })
+  }
+
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md space-y-5">
         <h3 className="text-2xl font-bold">Edit Profile</h3>
 
-        <div className="flex flex-col items-center gap-3">
-          <img src={editForm.avatar} alt="avatar" className="w-24 h-24 rounded-full border-4 border-blue-600" />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0]
-              if (file) {
-                const reader = new FileReader()
-                reader.onload = (ev) => setEditForm({ ...editForm, avatar: ev.target.result })
-                reader.readAsDataURL(file)
-              }
-            }}
-          />
-        </div>
+        <ProfileImageUpload 
+          imagePreview={editForm.avatar}
+          handleImageChange={handleImageChange}
+          removeImage={removeImage}
+          isLoading={false}
+        />
 
         <div className="space-y-3">
           <input

@@ -17,7 +17,7 @@ export default function BrowseCoursesPage() {
       id: 1,
       title: "Introduction to Web Development",
       description: "Learn HTML, CSS, and JavaScript to build modern websites.",
-      thumbnail: "/web-development-course.png",
+      thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
       instructor: "Sarah Mitchell",
       rating: 4.8,
       students: 12450,
@@ -32,7 +32,7 @@ export default function BrowseCoursesPage() {
       id: 2,
       title: "Advanced JavaScript Concepts",
       description: "Master async programming and modern ES6+ features.",
-      thumbnail: "/javascript-course.png",
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=500&h=300&fit=crop", // Data Science,
       instructor: "Michael Chen",
       rating: 4.9,
       students: 8920,
@@ -47,7 +47,7 @@ export default function BrowseCoursesPage() {
       id: 3,
       title: "React Fundamentals",
       description: "Build dynamic UIs with React hooks and components.",
-      thumbnail: "/react-course.png",
+      thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&w=500&h=300&fit=crop", // Mobile Development,
       instructor: "Emily Rodriguez",
       rating: 4.7,
       students: 15230,
@@ -58,6 +58,36 @@ export default function BrowseCoursesPage() {
       price: "Free",
       tags: ["React", "Hooks", "Components"],
     },
+    {
+    id: 4,
+    title: "UI/UX Design Principles",
+    description: "Learn user interface and user experience design best practices.",
+    thumbnail: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&w=500&h=300&fit=crop", // Design
+    instructor: "Alex Thompson",
+    rating: 4.9,
+    students: 11200,
+    duration: "5 weeks",
+    lessons: 8,
+    difficulty: "beginner",
+    category: "Design",
+    price: "Free",
+    tags: ["UI Design", "UX Research", "Figma"],
+  },
+  {
+    id: 5,
+    title: "Cloud Computing with AWS",
+    description: "Deploy and manage applications on Amazon Web Services.",
+    thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&w=500&h=300&fit=crop", // Cloud Computing
+    instructor: "James Wilson",
+    rating: 4.5,
+    students: 6340,
+    duration: "12 weeks",
+    lessons: 18,
+    difficulty: "advanced",
+    category: "Cloud Computing",
+    price: "$79.99",
+    tags: ["AWS", "Cloud", "DevOps"],
+  }
     // ... (add others if needed)
   ]
 
