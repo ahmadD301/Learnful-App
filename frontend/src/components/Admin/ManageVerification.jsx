@@ -6,7 +6,7 @@ import TeacherDialog from "./teacher/TeacherDialog.jsx"
 import ConfirmDialog from "./teacher/ConfirmDialog.jsx"
 import Sidebar from './Sidebar.jsx'
 import { Loader2 } from "lucide-react"
-
+import toast from "react-hot-toast"
 // import PendingTeachers from './teacher/PendingTeachers.jsx'
 
 function ManageQuizzes() {
@@ -38,81 +38,68 @@ function ManageQuizzes() {
 
   // ✅ Using fake teacher data instead of API
   const fetchPendingTeachers = async () => {
-    setLoading(true)
-    try {
-      // Simulate API delay
-      await new Promise((res) => setTimeout(res, 600))
+  setLoading(true);
+  try {
+    const res = await fetch("http://localhost:5000/api/admin/pending-teachers", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
-      const fakeTeachers = [
-        {
-          id: 1,
-          name: "Alice Johnson",
-          email: "alice.johnson@example.com",
-          specialization: "Algorithms",
-          certificates: [
-            "https://i.pravatar.cc/150?img=1"
-          ],
-          experience: "5 years of teaching experience in data structures",
-        },
-        {
-          id: 2,
-          name: "Bob Smith",
-          email: "bob.smith@example.com",
-          specialization: "Software Engineering",
-          certificates: [
-            "https://i.pravatar.cc/150?img=2"
-          ],
-          experience: "7 years of professional software development",
-        },
-        {
-          id: 3,
-          name: "Charlie Brown",
-          email: "charlie.brown@example.com",
-          specialization: "Database Systems",
-          certificates: [
-            "https://i.pravatar.cc/150?img=3"
-          ],
-          experience: "Taught SQL and NoSQL courses for 4 years",
-        },
-        {
-          id: 4,
-          name: "Diana Prince",
-          email: "diana.prince@example.com",
-          specialization: "Artificial Intelligence",
-          certificates: [
-            "https://i.pravatar.cc/150?img=4"
-          ],
-          experience: "Research assistant in AI at university level",
-        },
-      ];
+    const data = await res.json();
 
-      setTeachers(fakeTeachers)
-      setFilteredTeachers(fakeTeachers)
-    } catch (err) {
-      alert("Failed to load mock data")
-    } finally {
-      setLoading(false)
-    }
+    setTeachers(data);
+    setFilteredTeachers(data);
+
+  } catch (err) {
+    toast.error("Failed to load pending teachers");
+  } finally {
+    setLoading(false);
   }
+};
 
-  // Mock handler for approve/reject actions
-  const handleAction = async (teacherId, action) => {
-    try {
-      // Simulate a short delay
-      await new Promise((res) => setTimeout(res, 400))
-      alert(`Teacher ${action}d successfully`)
-      setTeachers(teachers.filter((t) => t.id !== teacherId))
-      setActionDialog({ open: false, teacher: null, action: null })
-    } catch (err) {
-      alert(`Failed to ${action} teacher`)
+
+const handleAction = async (teacherId, action, reason) => {
+  try {
+    let url = "";
+    if (action === "approve") {
+      url = `http://localhost:5000/api/admin/approve-teacher/${teacherId}`;
     }
+    if (action === "reject") {
+      url = `http://localhost:5000/api/admin/reject-teacher/${teacherId}`;
+    }
+
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: action === "reject" ? JSON.stringify({ reason }) : undefined,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Action failed");
+
+    toast.success(`Teacher ${action}d successfully`);
+
+    // Remove the approved teacher from UI
+    setTeachers(teachers.filter((t) => t.id !== teacherId));
+
+  } catch (err) {
+    toast.error(err.message);
+  } finally {
+    setActionDialog({ open: false, teacher: null, action: null });
   }
+};
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <Sidebar />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <Sidebar />
 
-      <main className="flex-1 p-8">
+        <main className="flex-1 p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -133,7 +120,7 @@ function ManageQuizzes() {
           <input
             type="text"
             placeholder="Search by name, email, or specialization..."
-            className="w-full border border-gray-700 rounded px-4 py-2 pl-9 bg-gray-900"
+            className="w-full border border-gray-700 rounded px-4 py-2 pl-9 bg-gray-900 text-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -148,7 +135,7 @@ function ManageQuizzes() {
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : filteredTeachers.length === 0 ? (
-          <div className="text-center py-12 border rounded bg-white">
+          <div className="text-center text-gray-500 py-12">
             No pending teacher applications found.
           </div>
         ) : (
@@ -186,10 +173,11 @@ function ManageQuizzes() {
             onCancel={() =>
               setActionDialog({ open: false, teacher: null, action: null })
             }
-            onConfirm={() => handleAction(actionDialog.teacher.id, actionDialog.action)}
+            onConfirm={(reason) => handleAction(actionDialog.teacher.id, actionDialog.action, reason)}
           />
         )}
-      </main>
+        </main>
+      </div>
     </div>
   )
 }

@@ -1,5 +1,5 @@
     import React from "react";
-    import { BookOpen, User, FileText, Settings } from "lucide-react";
+    import { BookOpen, User, FileText, Settings, AlertTriangle } from "lucide-react";
     import { useNavigate } from "react-router";
     import { motion } from "framer-motion";
 
@@ -26,10 +26,10 @@
                 route: "/admin/verification",
             },
             {
-                title: "Settings",
-                description: "Update platform configuration and preferences",
-                icon: FileText,
-                route: "/admin/Settings",
+                title: "Reported Comments",
+                description: "Review and moderate reported course reviews",
+                icon: AlertTriangle,
+                route: "/admin/reports",
             },
         ];
 
@@ -42,11 +42,11 @@
         className="mb-8"
     >
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent tracking-tight">
-        Quick Actions
+            Quick Actions
         </h1>
 
         <p className="text-[15px] text-neutral-600 dark:text-neutral-400 mt-2 leading-relaxed">
-        Monitor performance, manage users, and keep your courses up to date with smooth administrative control.
+            Monitor performance, manage users, and keep your courses up to date with smooth administrative control.
         </p>
 
         {/* Optional subtle divider for professional look */}

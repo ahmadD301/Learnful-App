@@ -1,7 +1,13 @@
 import React from "react"
+import { motion } from "framer-motion"
 
 export default function ProgressOverview({ stats }) {
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6  }}
+    >
     <div className="bg-white rounded-xl shadow p-6">
       <h3 className="text-xl font-bold mb-6">Progress Overview</h3>
 
@@ -11,10 +17,16 @@ export default function ProgressOverview({ stats }) {
           <span className="font-semibold">{stats.overallProgress}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3">
+        <motion.div
+          className="bg-blue-600  h-3 rounded-full"
+          initial={{ width: 0 }}
+          animate={{ width:`${stats.overallProgress}%`}}
+          transition={{ duration: 1.2 }}
+        >
           <div
-            className="bg-blue-600 h-3 rounded-full"
             style={{ width: `${stats.overallProgress}%` }}
-          ></div>
+          />
+          </motion.div>
         </div>
       </div>
 
@@ -33,5 +45,6 @@ export default function ProgressOverview({ stats }) {
         </div>
       </div>
     </div>
+    </motion.div>
   )
 }

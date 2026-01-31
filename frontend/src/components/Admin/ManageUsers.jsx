@@ -5,11 +5,11 @@ import { motion } from "framer-motion"
 
 function ManageUsers() {
     return (
-    <div className="flex min-h-screen bg-base-200">
-
-      <Sidebar />
-      <div className="flex-1 p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-                <motion.div
+    <div className="min-h-screen bg-base-200">
+      <div className="flex min-h-screen bg-base-200">
+        <Sidebar />
+        <div className="flex-1 p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
@@ -24,8 +24,9 @@ function ManageUsers() {
           <div className="mt-4 h-px w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
         </motion.div>
 
-        <UsersTable/>
+          <UsersTable/>
 
+        </div>
       </div>
     </div>
   )

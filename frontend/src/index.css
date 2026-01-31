@@ -1,3 +1,102 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .mq-header {
+    @apply bg-white/90 backdrop-blur border-b border-slate-200;
+  }
+  .mq-header-title {
+    @apply text-slate-900;
+  }
+  .mq-header-subtitle {
+    @apply text-slate-500;
+  }
+  .mq-header-logo {
+    @apply bg-gradient-to-br from-blue-600 to-indigo-600;
+  }
+  .mq-card {
+    @apply bg-white border border-slate-200 rounded-xl shadow-sm;
+  }
+  .mq-card-hover {
+    @apply transition hover:shadow-md;
+  }
+  .mq-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  .mq-btn-primary {
+    @apply mq-btn bg-blue-600 text-white hover:bg-blue-700 shadow-sm;
+  }
+  .mq-btn-secondary {
+    @apply mq-btn bg-slate-100 text-slate-700 hover:bg-slate-200;
+  }
+  .mq-btn-outline {
+    @apply mq-btn border border-slate-300 text-slate-700 hover:bg-slate-50;
+  }
+  .mq-btn-danger {
+    @apply mq-btn bg-red-600 text-white hover:bg-red-700 shadow-sm;
+  }
+}
+
+/* Blob animation for Hero section */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.triangle-shape {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid green;
+}
+
+/* Shared course content typography to match editor */
+.mq-prose p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+.mq-prose h1 { font-size: 2em; font-weight: 700; margin: 0.67rem 0; }
+.mq-prose h2 { font-size: 1.5em; font-weight: 700; margin: 0.75rem 0; }
+.mq-prose h3 { font-size: 1.17em; font-weight: 700; margin: 0.83rem 0; }
+.mq-prose ul, .mq-prose ol {
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  list-style-position: outside;
+  padding-left: 1.5rem;
+  /* Ensure visible markers and default list types */
+  list-style-type: initial;
+}
+.mq-prose li { margin: 0.12rem 0; }
+.mq-prose li p { margin: 0; }
+.mq-prose li > p { display: inline; }
+.mq-prose li::marker { color: #374151; font-weight: 600; }
+.mq-prose pre { margin: 0.5rem 0; }
+
+/* Defensive: remove any pseudo-element markers and ensure ordered lists show decimals */
+.mq-prose li::before { content: none !important; }
+.mq-prose ol { list-style-type: decimal; }

@@ -12,7 +12,7 @@ import SpecializationSelect from "../components/signUp/SpecializationSelect.jsx"
 import AuthLink from '../components/login/AuthLink.jsx'
 import CertificationUpload from "../components/signUp/CertificationUpload"
 import { ProfileImageUpload } from '../components/signUp/ProfileImageUpload'
-
+import axios from "axios";
 
 function TeacherSignUp() {
     const [formData, setFormData] = useState({
@@ -21,7 +21,8 @@ function TeacherSignUp() {
         password: "",
         confirmPassword: "",
         institution: "",
-        specialization: "",
+        specialization: "",      
+        customSpecialization: "",
     })
     const [isLoading, setIsLoading] = useState(false);
     const [certificationFile, setCertificationFile] = useState(null);
@@ -42,38 +43,57 @@ function TeacherSignUp() {
         "Cloud Computing",
         "DevOps",
     ]
+    const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+  if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    toast.error("Please fill in all fields");
+    setIsLoading(false);
+    return;
+  }
+  if (formData.password !== formData.confirmPassword) {
+    toast.error("Passwords do not match.");
+    setIsLoading(false);
+    return;
+  }
+  if (!formData.specialization) {
+    toast.error("Please select a specialization");
+    setIsLoading(false);
+    return;
+  }
+  if (!certificationFile) {
+    toast.error("Please upload your teaching certification.");
+    setIsLoading(false);
+    return;
+  }
 
-        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-            toast.error("Please fill in all fields");
-            setIsLoading(false);
-            return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-            toast.error("Passwords do not match.");
-            setIsLoading(false);
-            return
-        }
-        if (!formData.specialization) {
-            toast.error("Please select a specialization");
-            setIsLoading(false);
-            return
-        }
-        if (!certificationFile) {
-            toast.error("Please upload your teaching certification.")
-            setIsLoading(false)
-            return
-        }
+  try {
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("password", formData.password);
+    formDataToSend.append("role", "teacher");
+    formDataToSend.append("institution", formData.institution);
+    formDataToSend.append("specialization", formData.specialization);
+    if (profileImage?.file) formDataToSend.append("profileImage", profileImage.file);
+    if (certificationFile) formDataToSend.append("certification", certificationFile);
 
-        toast.success("Form validated successfully! 🎉");
-        console.log("Form Data:", formData)
+    const res = await axios.post("http://localhost:5000/api/auth/register-teacher", formDataToSend, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-        // Reset loading (since we're not saving)
-        setIsLoading(false)
-    }
+    toast.success("Teacher account created successfully!");
+    console.log(res.data);
+  } catch (err) {
+    console.error(err);
+    toast.error(err.response?.data?.message || "Error signing up");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
     // Handle input changes for all form fields
     const handleInputChange = (field, value) => {
         setFormData({ ...formData, [field]: value });
@@ -125,7 +145,7 @@ function TeacherSignUp() {
     }
     return (
         <div className="flex items-center justify-center min-h-screen ">
-            <div className="card card-bordered max-w-2xl w-full shadow-md ">
+            <div className="mq-card max-w-2xl w-full">
                 <div className="card-body">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
